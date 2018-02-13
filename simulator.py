@@ -7,15 +7,12 @@ import os
 import random
 import math
 import numpy as np
-from utils import file_ops, model, dcj
-
-#TODO REMOVE DCJ
-
+from utils import file_ops, model
 
 
 import ConfigParser
 
-__author__ = 'pfeijao' #MODIFIED BY ANEKHAI
+__author__ = 'pfeijao' # MODIFIED BY ANEKHAI
 
 
 # noinspection PyClassHasNoInit
@@ -213,9 +210,6 @@ class Simulation:
 
         prewgd_genome = current_genome.clone()
         prewgd_genome.name = "R"
-
-        #TODO: REMOVE THIS
-        print(dcj.dcj_distance(initial_genome, prewgd_genome))
 
         Simulation.apply_WGD(current_genome)
 

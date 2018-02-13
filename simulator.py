@@ -211,22 +211,25 @@ class Simulation:
         prewgd_genome = current_genome.clone()
         prewgd_genome.name = "R"
 
-        Simulation.apply_WGD(current_genome)
+        if param.WGD_type != "none":
+            Simulation.apply_WGD(current_genome)
 
-        for chromosome in current_genome.chromosomes:
-            chromosome.copy_number = [1] * len(chromosome.gene_order)
-        current_copy_number = current_genome.gene_count()
+            for chromosome in current_genome.chromosomes:
+                chromosome.copy_number = [1] * len(chromosome.gene_order)
+            current_copy_number = current_genome.gene_count()
 
-        _, current_insertion_gene = \
-            Simulation.apply_random_events(param, current_genome, current_insertion_gene, current_copy_number)
+            _, current_insertion_gene = \
+                Simulation.apply_random_events(param, current_genome, current_insertion_gene, current_copy_number)
 
-        wgd_genome = current_genome.clone()
-        wgd_genome.name = "A"
+            wgd_genome = current_genome.clone()
+            wgd_genome.name = "A"
 
         if param.WGD_type == "DD":
             genomes = [prewgd_genome, wgd_genome]
         elif param.WGD_type == "GH":
             genomes = [initial_genome, prewgd_genome, wgd_genome]
+        else:
+            genomes = [initial_genome, prewgd_genome]
 
         return genomes
 
@@ -252,7 +255,7 @@ class Simulation:
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description="Simulates rearrangement evolution w/ a WGD event")
-    parser.add_argument("-wgd", "--WGD_type", type=str, default="DD", help="Type of WGD event, either 'DD' for double distance or 'GH' for genome halving. ")
+    parser.add_argument("-wgd", "--WGD_type", type=str, default="none", help="Type of WGD event, either 'DD' for double distance or 'GH' for genome halving or none. ")
     parser.add_argument("-n", "--num_genes", type=int, default=100, help="Number of genes in the root genome.")
     parser.add_argument("-c", "--num_chr", type=int, default=5, help="Number of chromosomes in the root genome.")
     parser.add_argument("-ev", "--num_ev", type=int, default=10, help="Number of rearrangement events before WGD.")
